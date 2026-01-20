@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+// import Phaser from "phaser";
 import BaseScene from "./BaseScene";
 
 export default class MainScene extends BaseScene {
@@ -13,7 +13,7 @@ export default class MainScene extends BaseScene {
   create() {
     this.createBackground();
 
-    const titleText = this.add.text(300, 200, "Bocchi the rhythm!", {font: "64px ClipArtKorea"});
+    this.add.text(300, 200, "Bocchi the rhythm!", {font: "64px ClipArtKorea"});
 
     const startButton = this.add.text(300, 400, "시작하기", {font: "16px ClipArtKorea"});
     startButton.setInteractive();

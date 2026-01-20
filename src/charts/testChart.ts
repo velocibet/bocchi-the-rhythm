@@ -1,4 +1,4 @@
-import { pattern, stair, repeat } from "./patterns";
+import { pattern, stair } from "./patterns";
 
 export const BPM = 184;
 export const BEAT = 60000 / BPM;

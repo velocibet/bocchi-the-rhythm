@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+// import Phaser from "phaser";
 import BaseScene from "./BaseScene";
 
 interface Data {
@@ -18,8 +18,8 @@ export default class MainScene extends BaseScene {
   create(data: Data) {
     this.createBackground();
 
-    const scoreText = this.add.text(300, 300, `점수: ${data.score}`, {font: "32px ClipArtKorea"});
-    const comboText = this.add.text(300, 250, `최고 콤보: ${data.combo}`, {font: "32px ClipArtKorea"});
+    this.add.text(300, 300, `점수: ${data.score}`, {font: "32px ClipArtKorea"});
+    this.add.text(300, 250, `최고 콤보: ${data.combo}`, {font: "32px ClipArtKorea"});
 
     const startButton = this.add.text(300, 400, "다시 시작하기", {font: "16px ClipArtKorea"});
     startButton.setInteractive();
