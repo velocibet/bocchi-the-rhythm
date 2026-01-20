@@ -37,9 +37,9 @@ export default class MainScene extends BaseScene {
   }
 
   preload() {
-    this.load.audio("song", "/audio/song01.mp3");;
-    this.load.audio("sound01", "/audio/sound01.mp3");
-    this.load.image('burst01', '/images/burst01.png');
+    this.load.audio("song", "audio/song01.mp3");;
+    this.load.audio("sound01", "audio/sound01.mp3");
+    this.load.image('burst01', 'images/burst01.png');
 
     super.preload();
   }

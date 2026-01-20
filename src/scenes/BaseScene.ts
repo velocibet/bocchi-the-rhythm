@@ -6,7 +6,7 @@ export default class BaseScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('bg', '/images/background.webp');
+    this.load.image('bg', 'images/background.webp');
   }
 
   createBackground() {
