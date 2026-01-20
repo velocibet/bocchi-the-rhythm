@@ -1,21 +1,27 @@
 import Phaser from "phaser";
 import BaseScene from "./BaseScene";
 
+interface Data {
+    score: number;
+    combo: number
+}
+
 export default class MainScene extends BaseScene {
   constructor() {
-    super({ key: "MainScene" });
+    super({ key: "ResultScene" });
   }
 
   preload() {
     super.preload();
   }
 
-  create() {
+  create(data: Data) {
     this.createBackground();
 
-    const titleText = this.add.text(300, 200, "Bocchi the rhythm!", {font: "64px ClipArtKorea"});
+    const scoreText = this.add.text(300, 300, `점수: ${data.score}`, {font: "32px ClipArtKorea"});
+    const comboText = this.add.text(300, 250, `최고 콤보: ${data.combo}`, {font: "32px ClipArtKorea"});
 
-    const startButton = this.add.text(300, 400, "시작하기", {font: "16px ClipArtKorea"});
+    const startButton = this.add.text(300, 400, "다시 시작하기", {font: "16px ClipArtKorea"});
     startButton.setInteractive();
 
     startButton.on('pointerdown', () => {

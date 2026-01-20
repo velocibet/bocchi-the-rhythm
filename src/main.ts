@@ -3,6 +3,7 @@ import Phaser from "phaser";
 
 import MainScene from "./scenes/MainScene";
 import GameScene from "./scenes/GameScene";
+import ResultScene from "./scenes/ResultScene";
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -10,7 +11,8 @@ const config: Phaser.Types.Core.GameConfig = {
   height: 720,
   scene: [
     MainScene,
-    GameScene
+    GameScene,
+    ResultScene
   ]
 };
 

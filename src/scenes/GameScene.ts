@@ -27,7 +27,10 @@ export default class MainScene extends BaseScene {
   private evaluateText!: Phaser.GameObjects.Text;
   private judgeTimer?: Phaser.Time.TimerEvent;
   private combo = 0;
+  private highCombo = 0;
+  private score = 0;
   private comboText!: Phaser.GameObjects.Text;
+  private music!: Phaser.Sound.BaseSound;
 
   constructor() {
     super({ key: "GameScene" });
@@ -99,7 +102,7 @@ export default class MainScene extends BaseScene {
 
   update(time: number) {
     const currentTime = time - this.startTime;
-    const SPEED = 0.8;
+    const SPEED = 1.2;
 
     this.notes.forEach((note) => {
       if (note.hit) return;
@@ -113,6 +116,8 @@ export default class MainScene extends BaseScene {
         this.showJudge("Miss");
         this.combo = 0;
       }
+
+      this.checkGameEnd();
     });
   }
 
@@ -123,15 +128,15 @@ export default class MainScene extends BaseScene {
       this.createNote(note.line, note.time);
     });
 
-    const music = this.sound.add("song");
-    music.play();
+    this.music = this.sound.add("song");
+    this.music.play();
   }
 
-  createNote(noteLine: number, hitTime: number) {
+  private createNote(noteLine: number, hitTime: number) {
     const x = LANES_X[noteLine];
     const y = -50;
 
-    const circleNote = this.add.circle(x, y, 30, 0x00ffff);
+    const circleNote = this.add.circle(x, y, 38, 0x00ffff);
 
     this.notes.push({
       line: noteLine,
@@ -141,7 +146,7 @@ export default class MainScene extends BaseScene {
     });
   }
 
-  handleHit(line: number) {
+  private handleHit(line: number) {
     const currentTime = this.time.now - this.startTime;
 
     const candidates = this.notes.filter(
@@ -161,20 +166,24 @@ export default class MainScene extends BaseScene {
     if (diff <= 50) {
       this.combo++;
       this.showJudge("Perfect");
+      this.score += 1000
       note.hit = true;
       note.circle.destroy();
     } else if (diff <= 120) {
       this.combo++;
       this.showJudge("Good");
+      this.score += 500;
       note.hit = true;
       note.circle.destroy();
     } else {
       this.combo = 0;
       this.showJudge("Miss");
     }
+
+    this.checkGameEnd();
   }
 
-  showJudge(text: string) {
+  private showJudge(text: string) {
     this.evaluateText.setText(text);
     this.showCombo();
 
@@ -185,7 +194,8 @@ export default class MainScene extends BaseScene {
     });
   }
 
-  showCombo() {
+  private showCombo() {
+    if (this.combo > this.highCombo) this.highCombo = this.combo;
     if (this.combo <= 1) {
       this.comboText.setText("");
       return;
@@ -197,7 +207,7 @@ export default class MainScene extends BaseScene {
     }
   }
 
-  createComboBurst() {
+  private createComboBurst() {
     const burstImage = this.add.image(800, 300, 'burst01').setAlpha(0.5);;
     const burstAudio = this.sound.add("sound01");
     burstAudio.play();
@@ -207,4 +217,29 @@ export default class MainScene extends BaseScene {
     })
   }
 
+  private checkGameEnd() {
+    const allDone = this.notes.every(n => n.hit);
+
+    if (!allDone) return;
+
+    setTimeout(() => {
+      this.endGame();
+    }, 3000);
+  }
+
+  private endGame() {
+    this.cameras.main.fadeOut(800, 0, 0, 0);
+
+    this.time.delayedCall(800, () => {
+      this.music?.stop();
+      this.scene.start("ResultScene", {
+        score: this.score,
+        combo: this.highCombo
+      });
+
+      this.score = 0;
+      this.combo = 0;
+      this.highCombo = 0;
+    });
+  }
 }
